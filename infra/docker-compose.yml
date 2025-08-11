@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: livestock-postgres
+    environment:
+      POSTGRES_DB: livestock_db
+      POSTGRES_USER: livestock_user
+      POSTGRES_PASSWORD: livestock_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - livestock-network
+
+  # Backend API
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: livestock-backend
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgresql://livestock_user:livestock_password@postgres:5432/livestock_db
+      CORS_ORIGIN: http://localhost:5173
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    volumes:
+      - ../backend:/app
+      - /app/node_modules
+    networks:
+      - livestock-network
+    command: npm run start:dev
+
+  # Frontend Development Server
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile.dev
+    container_name: livestock-frontend
+    environment:
+      VITE_API_URL: http://localhost:3000
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+    networks:
+      - livestock-network
+    command: npm run dev
+
+  # Redis for caching and sessions (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: livestock-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - livestock-network
+
+volumes:
+  postgres_data:
+
+networks:
+  livestock-network:
+    driver: bridge
+
+# Development-only services
+# Uncomment for additional development tools
+
+# pgadmin:
+#   image: dpage/pgadmin4:latest
+#   container_name: livestock-pgadmin
+#   environment:
+#     PGADMIN_DEFAULT_EMAIL: admin@livestock.local
+#     PGADMIN_DEFAULT_PASSWORD: admin
+#   ports:
+#     - "8080:80"
+#   depends_on:
+#     - postgres
+#   networks:
+#     - livestock-network

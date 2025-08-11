@@ -1,0 +1,56 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "animals": "Animals",
+    "inventory": "Inventory",
+    "finance": "Finance",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "common": {
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import",
+    "name": "Name",
+    "date": "Date",
+    "status": "Status",
+    "actions": "Actions",
+    "offline": "Offline",
+    "online": "Online",
+    "syncing": "Syncing...",
+    "syncComplete": "Sync complete",
+    "error": "Error",
+    "success": "Success"
+  },
+  "animals": {
+    "title": "Animals",
+    "addAnimal": "Add Animal",
+    "editAnimal": "Edit Animal",
+    "species": "Species",
+    "breed": "Breed",
+    "birthDate": "Birth Date",
+    "gender": "Gender",
+    "mother": "Mother",
+    "father": "Father",
+    "notes": "Notes",
+    "active": "Active",
+    "sold": "Sold",
+    "deceased": "Deceased",
+    "male": "Male",
+    "female": "Female"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "totalAnimals": "Total Animals",
+    "recentActivity": "Recent Activity",
+    "quickActions": "Quick Actions",
+    "alerts": "Alerts"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "navigation": {
+    "dashboard": "Панель управління",
+    "animals": "Тварини",
+    "inventory": "Інвентар",
+    "finance": "Фінанси",
+    "reports": "Звіти",
+    "settings": "Налаштування"
+  },
+  "common": {
+    "add": "Додати",
+    "edit": "Редагувати",
+    "delete": "Видалити",
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "loading": "Завантаження...",
+    "search": "Пошук",
+    "filter": "Фільтр",
+    "export": "Експорт",
+    "import": "Імпорт",
+    "name": "Ім'я",
+    "date": "Дата",
+    "status": "Статус",
+    "actions": "Дії",
+    "offline": "Офлайн",
+    "online": "Онлайн",
+    "syncing": "Синхронізація...",
+    "syncComplete": "Синхронізація завершена",
+    "error": "Помилка",
+    "success": "Успіх"
+  },
+  "animals": {
+    "title": "Тварини",
+    "addAnimal": "Додати тварину",
+    "editAnimal": "Редагувати тварину",
+    "species": "Вид",
+    "breed": "Порода",
+    "birthDate": "Дата народження",
+    "gender": "Стать",
+    "mother": "Мати",
+    "father": "Батько",
+    "notes": "Примітки",
+    "active": "Активна",
+    "sold": "Продана",
+    "deceased": "Померла",
+    "male": "Самець",
+    "female": "Самка"
+  },
+  "dashboard": {
+    "title": "Панель управління",
+    "totalAnimals": "Загальна кількість тварин",
+    "recentActivity": "Недавня активність",
+    "quickActions": "Швидкі дії",
+    "alerts": "Сповіщення"
+  }
+}
