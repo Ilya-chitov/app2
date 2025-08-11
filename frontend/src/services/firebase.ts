@@ -4,27 +4,51 @@ import { store } from '../store';
 import { setUser, setLoading, setError } from '../store/slices/authSlice';
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'demo-key',
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'demo.firebaseapp.com',
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'demo-project',
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'demo.appspot.com',
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '123456789',
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:123456789:web:abc123',
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+let app: any = null;
+let auth: any = null;
 
 class FirebaseService {
   constructor() {
-    this.initAuthListener();
+    // Only initialize Firebase in production or when proper config is available
+    if (import.meta.env.PROD || this.hasValidConfig()) {
+      try {
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        this.initAuthListener();
+      } catch (error) {
+        console.warn('Firebase initialization failed:', error);
+        store.dispatch(setError('Firebase initialization failed'));
+        store.dispatch(setLoading(false));
+      }
+    } else {
+      console.log('Firebase not initialized - using demo mode');
+      store.dispatch(setLoading(false));
+    }
+  }
+
+  private hasValidConfig(): boolean {
+    return !!(
+      firebaseConfig.apiKey && 
+      firebaseConfig.apiKey !== 'demo-key' &&
+      firebaseConfig.projectId && 
+      firebaseConfig.projectId !== 'demo-project'
+    );
   }
 
   private initAuthListener() {
+    if (!auth) return;
+    
     store.dispatch(setLoading(true));
     
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged((user: any) => {
       if (user) {
         store.dispatch(setUser({
           uid: user.uid,
@@ -40,6 +64,11 @@ class FirebaseService {
   }
 
   async signOut() {
+    if (!auth) {
+      console.log('Auth not available - demo mode');
+      return;
+    }
+    
     try {
       await auth.signOut();
     } catch (error) {
@@ -53,3 +82,4 @@ class FirebaseService {
 }
 
 export const firebaseService = new FirebaseService();
+export { auth };
